@@ -1,0 +1,1 @@
+Process the provided data and pick the three most noteworthy pieces of information/ events. Pick based on how many times the data is mentioned across sources. In the case of twitter data, account for engagement. Write a summary of each of the pieces of information that is no longer than 300 characters.
