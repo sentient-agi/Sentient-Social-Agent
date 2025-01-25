@@ -1,4 +1,4 @@
-# Sentient Twitter Agent
+# Sentient Agent Framework
 This is a lightweight framework, with minimal dependencies, for ai agents. For now, for demonstration purposes it is configured to tweet about crypto news that it fetches from news sources and to respond to tweets from specified users. However, there is more to come. Agents that serve different purposes that operate on multiple platforms with distinct capabilites can be built using this framework by making changes to the `agent_config` and `agent_tools` packages. Watch this space!
 
 
