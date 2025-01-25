@@ -68,13 +68,13 @@ python -m unittest
 
 ### 5. Run agent
 ```
-python -m src.twitter_agent.twitter_agent
+python -m src.agent.agent
 ```
 
 
 ## Configuring your agent
 ### Giving your agent a purpose and personality
-You can congifure your agent's personality by updating the prompt files in the `agent_config` package in `src/twitter_agent/agent_config/prompts`.
+You can congifure your agent's personality by updating the prompt files in the `agent_config` package in `src/agent/agent_config/prompts`.
 - `purpose_prompt.txt` is used to tell the agent the purpose that it serves.
 - `data_prompt.txt` is used to tell the agent how to process the data that it uses to inform its posts.
 - `post_prompt.txt` is used to tell the agent how to post a new tweet (tone, format, etc).
@@ -83,10 +83,10 @@ You can congifure your agent's personality by updating the prompt files in the `
 ![Alt Text](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExeHdrNzJpNjl0eGNzdGVxYWk4cG1pMDFsYjd5bmh3eWV3aHNnOW55cyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Pu5F5t64WNKYE/giphy.gif)
 
 ### Picking which users your agent interacts with
-You can configure your agent to respond to particular key users using the `KEY_USERS` constant in the `twitter_agent` module in `src/twitter_agent/twitter_agent.py`. Your agent will respond to tweets from these key users.
+You can configure your agent to respond to particular key users using the `KEY_USERS` constant in the `agent` module in `src/agent/agent.py`. Your agent will respond to tweets from these key users.
 
 ### Picking the data your agent uses
-You can configure the data that your agent has access to using using the `data` module in the `agent_tools` package in `src/twitter_agent/agent_tools/data.py`.
+You can configure the data that your agent has access to using using the `data` module in the `agent_tools` package in `src/agent/agent_tools/data.py`.
 
 
 ## Twitter API
