@@ -12,7 +12,7 @@ from .agent_config.config import Config
 logger = logging.getLogger(__name__)
 logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.INFO)
 
-class TwitterAgent:
+class Agent:
     # Agent will respond to tweets from these users
     KEY_USERS = ["testfollower001"]
 
@@ -186,9 +186,9 @@ class TwitterAgent:
 def main():
     try:
         logging.info("Agent starting up...")
-        twitter_agent = TwitterAgent()
-        # twitter_agent.respond_to_key_users()
-        twitter_agent.post_tweet()
+        agent = Agent()
+        agent.respond_to_key_users()
+        agent.post_tweet()
         logging.info("Agent shutting down...")
     except KeyboardInterrupt:
         logging.info("Agent shutting down...")
