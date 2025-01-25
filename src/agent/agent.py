@@ -199,7 +199,7 @@ def main():
         logging.info("Agent starting up...")
         agent = Agent()
         agent.respond_to_key_users()
-        # agent.post_tweet()
+        agent.post_tweet()
         logging.info("Agent shutting down...")
     except KeyboardInterrupt:
         logging.info("Agent shutting down...")
