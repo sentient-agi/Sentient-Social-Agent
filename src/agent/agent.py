@@ -16,6 +16,9 @@ class Agent:
     # Agent will respond to tweets from these users
     KEY_USERS = ["testfollower001"]
 
+    # Agent will post this number of respones per run
+    RESPONSES_PER_RUN = 5
+
     def __init__(self):
         # Load environment variables
         load_dotenv()
@@ -86,8 +89,7 @@ class Agent:
         start_time = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(hours=hours)
         relevant_conversations = self.twitter.get_relevant_conversations(
             key_users=self.KEY_USERS,
-            start_time=start_time,
-            max_results=5)
+            start_time=start_time)
 
         logging.info(f"Found {len(relevant_conversations)} relevant conversations")
         if relevant_conversations:
@@ -99,18 +101,19 @@ class Agent:
         """Uses model to respond to conversation"""
 
         first_tweet = conversation[0]
+        last_tweet = conversation[-1]
         conversation_id = first_tweet["conversation_id"]
         logging.info(f"Responding to conversation {conversation_id}...")
 
         prompt = self.__construct_repsonse_prompt(conversation)
         try:
-            # Generate response using model
-            response = self.model.query(prompt)
+            # Generate response using model and remove quotation marks
+            response = self.model.query(prompt)[1:-1]
             logging.info(f"Response: {response}")
         
             # Post response
             logging.info("Posting response...")
-            self.twitter.post_tweet(response, conversation_id)
+            self.twitter.post_tweet(response, last_tweet["id"])
             
         except Exception as e:
             logging.warning(f"Error processing conversation {conversation_id}: {e}")
@@ -121,29 +124,37 @@ class Agent:
 
         logging.info("Responding to key users...")
         relevant_conversations = self.__get_relevant_conversations()
-        threads = self.__get_threads(relevant_conversations.keys())
 
         if not relevant_conversations:
             logging.info("No conversations to respond to.")
             return
         
-        for thread in threads.values():
-            sorted_thread = sorted(thread, key=lambda k: k["created_at"])
-            first_tweet = thread[0]
-            conversation_id = first_tweet["conversation_id"]
+        threads = self.__get_threads(relevant_conversations.keys())
+        
+        response_count = 0
+        for conversation in relevant_conversations.values():
+            # Ensure that agent does not repsond to too many tweets
+            if response_count >= self.RESPONSES_PER_RUN:
+                break
             
-            # If the thread was started by a key user or by an agent respond to
-            # it
-            if ((first_tweet["author"] in self.KEY_USERS) or
-                (first_tweet["author"] == self.twitter.user_id)):
-                self.__respond_to_conversation(sorted_thread)
+            conversation_id = conversation[0]["conversation_id"]
+            thread = threads.get(conversation_id, False)
 
-            # This is almost definitely a response to a thread that was not 
-            # started by the agent or by a key user (unless the previous tweets
-            # were posted before the start_time used in the twitter API query)
+            if thread:
+                sorted_thread = sorted(thread, key=lambda k: k["created_at"])
+                first_tweet = sorted_thread[0]
+                # If the thread was started by a key user or by an agent 
+                # respond to it
+                if ((first_tweet["author"] in self.KEY_USERS) or
+                    (first_tweet["author"] == self.twitter.user_id)):
+                    self.__respond_to_conversation(sorted_thread)
+                    response_count+=1
+                else:
+                    logging.info(f"Skipping conversation {conversation_id}. Thread was not started by key user or agent.")
+                    continue
             else:
-                logging.info(f"Skipping conversation {conversation_id}. Thread was not started by key user or agent.")
-                continue
+                self.__respond_to_conversation(conversation)
+                response_count+=1
 
         logging.info("Successfully responded to relevant conversations.")
 
@@ -188,7 +199,7 @@ def main():
         logging.info("Agent starting up...")
         agent = Agent()
         agent.respond_to_key_users()
-        agent.post_tweet()
+        # agent.post_tweet()
         logging.info("Agent shutting down...")
     except KeyboardInterrupt:
         logging.info("Agent shutting down...")

@@ -10,9 +10,9 @@ class Twitter:
         user_id (str): The ID of the authenticated Twitter user.
     
     Methods:
-        get_relevant_conversations(key_users, start_time, max_results=10):
-            Retrieves tweets from specified users and groups them by 
-            conversation ID.
+        get_relevant_conversations(key_users, conversation_ids, start_time):
+            Retrieves tweets from specified users or with particular 
+            conversation ids and groups them by conversation ID.
 
         post_tweet(post_text, in_reply_to_tweet_id):
             Posts a new tweet. If `in_reply_to_tweet_id` is not `None` then it 
@@ -67,9 +67,13 @@ class Twitter:
             self,
             key_users=None,
             conversation_ids=None,
-            start_time=None,
-            max_results=None):
-        """ Gets tweets from key users. Returns tweets grouped by conversation_id."""
+            start_time=None):
+        """
+        Gets tweets from key users or from specific conversations.
+        
+        Returns tweets grouped by conversation_id.
+        """
+
         if key_users:
             query = self.__build_search_query_users(key_users)
         else:
@@ -78,9 +82,8 @@ class Twitter:
         response = self.v2api.search_recent_tweets(
             query=query,
             start_time=start_time,
-            max_results=max_results,
-            tweet_fields=["created_at","author_id","in_reply_to_user_id","conversation_id", "public_metrics"],
-            expansions=["author_id","in_reply_to_user_id"]
+            tweet_fields=["created_at","author_id","conversation_id", "public_metrics"],
+            expansions=["author_id"]
         )
         
         if not response.get("data", False):
@@ -108,6 +111,7 @@ class Twitter:
                     "public_metrics": tweet["public_metrics"]
                 }
             )
+
 
         return conversations
 

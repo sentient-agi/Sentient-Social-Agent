@@ -61,8 +61,7 @@ class Data:
         key_users = self.CRYPTO_NEWS + self.KOLS
         return self.twitter.get_relevant_conversations(
             key_users=key_users,
-            start_time=self.start_time,
-            max_results=100)
+            start_time=self.start_time)
     
 
     def __get_crypto_panic_data(self):
@@ -75,7 +74,11 @@ class Data:
 
 
     def get_data(self):
-        """Fetches data from the relevant sources. Called once when agent starts up."""
+        """
+        Fetches data from the relevant sources.
+        
+        Called once when agent starts up.
+        """
 
         twitter_data = self.__get_twitter_data()
         crypto_panic_data = self.__get_crypto_panic_data()
