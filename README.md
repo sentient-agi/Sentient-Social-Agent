@@ -91,7 +91,7 @@ You can configure the data that your agent has access to using using the `data` 
 
 ## Twitter API
 > [!NOTE]
-> **It is important to consider the twitter API's [rate limits](https://docs.x.com/x-api/fundamentals/rate-limits#v2-limits). In this example, every time the agent runs two calls are made to the [Recent Search](https://docs.x.com/x-api/posts/recent-search) endpoint, which is not possible with the free plan (you could wait 15 minutes between calls).** 
+> **It is important to consider the twitter API's [rate limits](https://docs.x.com/x-api/fundamentals/rate-limits#v2-limits). In this example, every time the agent runs three calls are made to the [Recent Search](https://docs.x.com/x-api/posts/recent-search) endpoint, which is not possible with the free plan (you could wait 15 minutes between calls).** 
 
 If you are using the free plan you will more than likely need to choose between responding to particular users' tweets and using twitter as a data source. You can use other endpoints to fetch tweets, mentions, retweets and quotes that have their own rate limits, but managing different endpoints' rate limits significantly complicates things. These are the endpoints that this agent uses:
 
