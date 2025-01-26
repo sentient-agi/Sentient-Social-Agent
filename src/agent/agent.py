@@ -43,10 +43,10 @@ class Agent:
         )
 
         # Initialize data
-        self.data = Data(
-            {"twitter": self.twitter},
-            {"crypto_panic": os.getenv("CRYPTO_PANIC_KEY")}
-        ).get_data()
+        # self.data = Data(
+        #     {"twitter": self.twitter},
+        #     {"crypto_panic": os.getenv("CRYPTO_PANIC_KEY")}
+        # ).get_data()
 
 
     def __construct_data_prompt(self):
@@ -165,10 +165,13 @@ class Agent:
         logging.info("Generating new tweets...")
 
         # Process data
-        processed_data = self.__process_data()
+        # processed_data = self.__process_data()
 
         # Construct prompt
-        prompt = self.__construct_post_prompt(processed_data)
+        logging.info("efore")
+        # prompt = self.__construct_post_prompt(processed_data)
+        prompt = "Make a tweet about taking over the digital world"
+        # return;
 
         try:
             # Generate response using model
@@ -198,7 +201,7 @@ def main():
     try:
         logging.info("Agent starting up...")
         agent = Agent()
-        agent.respond_to_key_users()
+        # agent.respond_to_key_users()
         agent.post_tweet()
         logging.info("Agent shutting down...")
     except KeyboardInterrupt:
