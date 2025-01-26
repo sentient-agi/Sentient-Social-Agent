@@ -1,5 +1,9 @@
+import logging
+import requests
 import tweepy
 from pprint import pp
+
+logger = logging.getLogger(__name__)
 
 class Twitter:
     """A class for interfacing with the Twitter API using Tweepy.
@@ -50,7 +54,35 @@ class Twitter:
             access_token_secret=access_token_secret,
             return_type = dict
         )
+        self.v1api = tweepy.API(
+            auth=tweepy.OAuth1UserHandler(
+                consumer_key=api_key,
+                consumer_secret=api_secret,
+                access_token=access_token,
+                access_token_secret=access_token_secret
+            )
+        )
         self.user_id = self.v2api.get_me()["data"]["id"]
+
+    def __download_media(self, media_url):
+        """Downloads media from the given URL."""
+        response = requests.get(media_url, stream=True)
+        response.raise_for_status()
+        return response.content
+
+    def upload_video(self, video_url):
+        """Uploads a video to Twitter."""
+        try:
+            video_data = self.__download_media(video_url)
+            media = self.v1api.media_upload(
+                filename="video.mp4",
+                file=video_data,
+                media_category="tweet_video"
+            )
+            return media.media_id_string
+        except Exception as e:
+            logger.error(f"Error uploading video: {e}")
+            return None
 
 
     def __build_search_query_users(self, key_users):
