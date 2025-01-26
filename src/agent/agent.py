@@ -4,7 +4,7 @@ import os
 import logging
 from dotenv import load_dotenv
 from pprint import pformat
-from .agent_tools.data import Data
+from .agent_tools.heygen import Heygen
 from .agent_tools.model import Model
 from .agent_tools.twitter import Twitter
 from .agent_config.config import Config
@@ -42,11 +42,10 @@ class Agent:
             bearer_token=os.getenv("TWITTER_BEARER_TOKEN")
         )
 
-        # Initialize data
-        self.data = Data(
-            {"twitter": self.twitter},
-            {"crypto_panic": os.getenv("CRYPTO_PANIC_KEY")}
-        ).get_data()
+        # Initialize heygen
+        self.heygen = Heygen(
+            api_key=os.getenv("HEYGEN_API_KEY")
+        )
 
 
     def __construct_data_prompt(self):
@@ -165,10 +164,13 @@ class Agent:
         logging.info("Generating new tweets...")
 
         # Process data
-        processed_data = self.__process_data()
+        # processed_data = self.__process_data()
 
         # Construct prompt
-        prompt = self.__construct_post_prompt(processed_data)
+        logging.info("efore")
+        # prompt = self.__construct_post_prompt(processed_data)
+        prompt = "Make a tweet about taking over the digital world"
+        # return;
 
         try:
             # Generate response using model
@@ -177,28 +179,38 @@ class Agent:
             tweets = [s.strip('"') for s in response.split('\n') if s.strip()]
             logging.info(f"Generated tweets: {tweets}")
         
-            # Post the response as a twitter thread
-            logging.info("Posting generated tweets...")
+            # Generate and post the tweets as a twitter thread with videos
+            logging.info("Generating and posting tweets with videos...")
+            
+            # Post the first tweet
+            video_url = self.heygen.generate_video(tweets[0])
+            media_id = self.twitter.upload_video(video_url)
             twitter_response = self.twitter.post_tweet(
-                post_text=tweets[0]
+                post_text=tweets[0],
+                media_id=media_id
             )
             in_reply_to_tweet_id = twitter_response[1]
+
+            # Post the rest of the tweets in the thread
             for tweet in tweets[1:]:
+                video_url = self.heygen.generate_video(tweet)
+                media_id = self.twitter.upload_video(video_url)
                 twitter_response = self.twitter.post_tweet(
                     post_text=tweet,
-                    in_reply_to_tweet_id=in_reply_to_tweet_id
+                    in_reply_to_tweet_id=in_reply_to_tweet_id,
+                    media_id=media_id
                 )
                 in_reply_to_tweet_id = twitter_response[1]
-        
+
         except Exception as e:
-            logging.warning(f"Error posting tweet: {e}")
+            logging.warning(f"Error generating or posting tweet: {e}")
 
 
 def main():
     try:
         logging.info("Agent starting up...")
         agent = Agent()
-        agent.respond_to_key_users()
+        # agent.respond_to_key_users()
         agent.post_tweet()
         logging.info("Agent shutting down...")
     except KeyboardInterrupt:
