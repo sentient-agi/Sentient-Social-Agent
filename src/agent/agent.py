@@ -1,5 +1,5 @@
-import os
 import logging
+import os
 from dotenv import load_dotenv
 from .agent_tools.model.model import Model
 from .agent_tools.twitter.twitter import Twitter
