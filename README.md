@@ -103,13 +103,13 @@ python3 -m src.agent.agent
 All of the tools available to your agent can be found in the `agent_tools` package. Each tool has its own package and in that package there is a configuration module. To configure a tool just change the constants in its configuration module.
 
 #### Model Configuration
-You can configure the model that your agent uses in the `model_config` in the model package in `agent_tools`.
+You can configure the model that your agent uses in the `model_config` in the `model` package in `agent_tools`.
 - **OPTIONAL:** You can change the model that is used using the `BASE_URL` and `MODEL` constants. By default your agent will use Dobby 8b Unhinged, but the framework supports all OpenAI API compatible LLM endpoints.
 - **OPTIONAL:** You can configure the model that is used using the `TEMPERATURE`, `MAX_TOKENS` and `SYSTEM_PROMPT` constants, however the default values are likely suitable for most agents.
 
 
 #### X (Twitter) Configuration
-You can configure how your agent behaves on X (Twitter) using the `twitter_config` module in the `agent_config` package.
+You can configure how your agent behaves on X (Twitter) using the `twitter_config` module in the `twitter` package in `agent_tools`.
 - 🚨 **REQUIRED:** You can configure the users with which your agent will interact using the `KEY_USERS` constant. By default your agent will respond to tweets from these key users.
 - 🚨 **REQUIRED:** You can configure how may times your agent posts per run using the `RESPONSES_PER_RUN` constant.
 - **OPTIONAL:** You can configure your agent to only respond to posts that contain a particular key word or phrase using the `KEY_PHRASE` constant.
