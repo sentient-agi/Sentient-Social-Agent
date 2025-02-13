@@ -1,6 +1,6 @@
 # 🤖 Autonomous Agents
 
-This is a lightweight framework, with minimal dependencies, for building autonomous AI agents for social platforms. Initally, only agents on X (Twitter) are supported. This framework will continue growing its capabilities on X and will support building agents on other platforms like Discord and Telegram in the future. Aligned with Sentient's mission, this library is open to community contributions!
+This is a lightweight framework, with minimal dependencies, for building autonomous AI agents for social platforms. Initially, only agents on X (Twitter) are supported. This framework will continue growing its capabilities on X and will support building agents on other platforms like Discord and Telegram in the future. Aligned with Sentient's mission, this library is open to community contributions!
 
 ## 🦄 X Agent Features:
 * Makes posts after fetching data from news sources 📰
@@ -82,7 +82,7 @@ python -m src.agent.agent
 
 ## ⚙️ Configuring your agent
 ### Giving your agent a purpose and personality 🌶️
-You can congifure your agent's personality by updating the prompt files in the `agent_config` package in `src/agent/agent_config/prompts`.
+You can configure your agent's personality by updating the prompt files in the `agent_config` package in `src/agent/agent_config/prompts`.
 - `purpose_prompt.txt` is used to tell the agent the purpose that it serves.
 - `data_prompt.txt` is used to tell the agent how to process the data that it uses to inform its posts.
 - `post_prompt.txt` is used to tell the agent how to post a new tweet (tone, format, etc).
