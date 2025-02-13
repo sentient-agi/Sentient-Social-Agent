@@ -1,8 +1,7 @@
-import json
-import logging
 import openai
 from datetime import datetime
 from langchain_core.prompts import PromptTemplate
+from .model_config import ModelConfig
 
 
 class Model:
@@ -10,14 +9,7 @@ class Model:
     A class for interfacing with a model using the OpenAI API.
 
     Attributes:
-        model (str): The name of the model to use.
         api_key (str): API key used for authentication.
-        temperature (float): Temperature setting for response randomness 
-            (default 0.0).
-        max_tokens (int or None): Maximum number of tokens for the response
-            (default None).
-        system_prompt (str): A predefined system message or prompt to guide
-            model behavior (default is "default").
         date_context (str): A string representing the current date, used in the
             system prompt.
         client (openai.OpenAI): An instance of the OpenAI client configured
@@ -31,51 +23,42 @@ class Model:
 
     def __init__(
             self,
-            api_key,
-            url,
-            model,
-            temperature=0.0,
-            max_tokens=None,
-            system_prompt="default"):
+            api_key):
         """
         Initializes the Model class with the necessary parameters.
 
         Args:
             api_key (str): API key for authenticating with the OpenAI service.
-            url (str): URL for the OpenAI API.
-            model (str): The model name.
-            temperature (float, optional): Temperature setting for response 
-                randomness (default 0.0).
-            max_tokens (int, optional): Maximum number of tokens for the 
-                response (default None).
-            system_prompt (str, optional): A custom system prompt for guiding 
-                model behavior (default "default").
 
         Initializes the model, sets up the OpenAI client, and configures the 
         system prompt.
         """
+
+        # Load configuration
+        self.config = ModelConfig()
+
         # Assign values to object properties
-        self.model = model
         self.api_key = api_key
-        self.temperature = temperature
-        self.max_tokens = max_tokens
+        self.model = self.config.MODEL
+        self.temperature = self.config.TEMPERATURE
+        self.max_tokens = self.config.MAX_TOKENS
         self.date_context = datetime.now().strftime("%Y-%m-%d")
 
         # Set up model API
         self.client = openai.OpenAI(
-            base_url=url,
+            base_url=self.config.BASE_URL,
             api_key=self.api_key,
         )
 
         # Set up system prompt
-        if system_prompt == "default":
+        if self.config.SYSTEM_PROMPT == "default":
             system_prompt_search = PromptTemplate(
                 input_variables=["date_today"],
                 template="You are a helpful assistant that can answer questions and provide information."
                 )
             self.system_prompt = system_prompt_search.format(date_today=self.date_context)
         else:
-            self.system_prompt = system_prompt
+            self.system_prompt = self.config.SYSTEM_PROMPT
 
 
     def __query_async(self, query):
@@ -91,24 +74,17 @@ class Model:
                 {"role": "user", "content": query}
             ]
 
-        try:
-            stream = self.client.chat.completions.create(
-                model=self.model,
-                messages=messages,
-                stream=True,
-                temperature=self.temperature,
-                max_tokens=self.max_tokens
-            )
+        stream = self.client.chat.completions.create(
+            model=self.model,
+            messages=messages,
+            stream=True,
+            temperature=self.temperature,
+            max_tokens=self.max_tokens
+        )
 
-            for chunk in stream:
-                if chunk.choices[0].delta.content is not None:
-                    yield chunk.choices[0].delta.content
-
-        except Exception as e:
-            logging.warning(f"Error during get_answer_fireworks call: {e}")
-            yield "data:" + json.dumps(
-                {"type": "error",
-                 "data": "We are currently experiencing some issues. Please try again later."}) + "\n\n"
+        for chunk in stream:
+            if chunk.choices[0].delta.content is not None:
+                yield chunk.choices[0].delta.content
 
 
     def query(self, query):
