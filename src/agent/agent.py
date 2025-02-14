@@ -1,8 +1,10 @@
+import discord
 import logging
 import os
 from dotenv import load_dotenv
 from .agent_tools.model.model import Model
 from .agent_tools.twitter.twitter import Twitter
+from .agent_tools.discord.discord import Discord
 from .agent_config import AgentConfig
 
 logger = logging.getLogger(__name__)
@@ -23,12 +25,21 @@ class Agent:
 
         # Initialize twitter client if twitter is enabled
         if self.config.TWITTER_ENABLED:
+            logging.info("Twitter client starting up...")
             self.twitter = Twitter(
                 api_key=os.getenv("TWITTER_API_KEY"),
                 api_secret=os.getenv("TWITTER_API_SECRET"),
                 access_token=os.getenv("TWITTER_ACCESS_TOKEN"),
                 access_token_secret=os.getenv("TWITTER_ACCESS_TOKEN_SECRET"),
                 bearer_token=os.getenv("TWITTER_BEARER_TOKEN"),
+                model=self.model
+            )
+
+        # Initialize discord client if discord is enabled
+        if self.config.DISCORD_ENABLED:
+            logging.info("Discord client starting up...")
+            self.discord = Discord(
+                api_key=os.getenv("DISCORD_API_KEY"),
                 model = self.model
             )
 
