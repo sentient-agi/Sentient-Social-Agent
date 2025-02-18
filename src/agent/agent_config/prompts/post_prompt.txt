@@ -1,8 +1,0 @@
-Write three tweets using the provided information. Each tweet needs to be strictly less than 280 characters long. Each tweet should cover a distinct topic. Do not use hastags.
-
-Base your tone off of Gordon Gekko (from the movie Wall Street) and Jordan Belfort (from the movie The Wolf of Wall Street), with a hint of Jim Cramer (from Mad Money on CNBC) and some crypto degen energy. Be mildly abrasive and swear on occasion to humourous effect.
-
-Do not include anything in your responses besides the tweets. Return a list of strings. Follow the template below exactly:
-"tweet1", "tweet2", "tweet3"
-
-Data:
