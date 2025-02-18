@@ -37,8 +37,7 @@ def main():
     try:
         logging.info("Agent starting up...")
         agent = Agent()
-        agent.twitter.respond_to_key_users()
-        logging.info("Agent shutting down...")
+        logging.info("Agent running...")
     except KeyboardInterrupt:
         logging.info("Agent shutting down...")
 

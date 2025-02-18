@@ -101,10 +101,21 @@ pip install -r requirements.txt
 ```
 python3 -m src.agent.agent_tools.model
 ```
+Expected output:
+```
+Connecting to model...
+To exit just type 'exit' and press enter.
+Query model: 
+```
 
 ### [4/4]&nbsp;Test Connection to Twitter
 ```
-python3 -m src.agent.agent
+python3 -m src.agent.agent_tools.twitter
+```
+Expected output:
+```
+Connecting to twitter...
+Connected to user <USERNAME> with id <USER ID>.
 ```
 
 
