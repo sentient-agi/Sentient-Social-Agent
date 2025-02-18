@@ -99,7 +99,7 @@ pip install -r requirements.txt
 
 ### [3/4]&nbsp;Test Connection to Model
 ```
-python3 -m src.agent_tools.model
+python3 -m src.agent.agent_tools.model
 ```
 
 ### [4/4]&nbsp;Test Connection to Twitter
