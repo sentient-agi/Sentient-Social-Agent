@@ -21,9 +21,7 @@ class Model:
     """
 
 
-    def __init__(
-            self,
-            api_key):
+    def __init__(self, api_key):
         """
         Initializes the Model class with the necessary parameters.
 
