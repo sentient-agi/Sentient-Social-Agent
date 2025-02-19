@@ -49,22 +49,21 @@ For now the only platform that is supported is X (Twitter). We're going to conti
 
 
 # Quickstart 🚀
-### [1/4]&nbsp;&nbsp;Set Up Agent Credentials
+### [1/3]&nbsp;&nbsp;Set Up Agent Credentials
 
 > [!WARNING]
 > **We suggest creating a new X account for your agent.**
 
-#### 1. Create secrets file
-
+#### 1.1. Create secrets file
 Create the `.env` file by copying the contents of `.env.example`. This is where you will store all of your agent's credentials.
 ```
 cp .env.example .env
 ```
 
-#### 2. Get model credentials
+#### 1.2. Get model credentials
 Add your Fireworks, or other inference provider, API key to the `.env` file.
 
-#### 3. Get X (Twitter) credentials
+#### 1.3. Get X (Twitter) credentials
 In order to interact with the X (Twitter) API, your agent needs developer credentials from the X (Twitter) developer portal [here](https://developer.x.com/en/portal/dashboard).
 
 From the *Dashboard* page, click on the gear icon to access the *Settings* page for your default project.
@@ -77,27 +76,31 @@ Set the user authentication settings for your app as follows:
 
 Generate all of the required credentials on the *Keys and tokens* page. Add them to the `.env` file.
 
+#### 1.4. Get Discord credentials
+Before you can build a Discord bot you need to create it in the Discord Developer Portal. Follow the steps in the *Creating an App* part of [this](https://discord.com/developers/docs/quick-start/getting-started#step-1-creating-an-app) guide and add your discord token to the `.env` file.
 
-### [2/4]&nbsp;&nbsp;Set Up Python Virtual Environment
+### [2/3]&nbsp;&nbsp;Set Up Python Virtual Environment
 > [!NOTE]
 > **These instructions are for unix-based systems (i.e. MacOS, Linux). Before you proceed, make sure that you have installed `python` and `pip`. If you have not, follow [these](https://packaging.python.org/en/latest/tutorials/installing-packages/) instructions to do so.**
 
-#### 1. Create a Python virtual environment
+#### 2.1. Create Python virtual environment
 ```
 python3 -m venv .venv
 ```
 
-#### 2. Activate the Python virtual environment
+#### 2.2. Activate Python virtual environment
 ```
 source .venv/bin/activate
 ```
 
-#### 3. Install dependencies
+#### 2.3. Install dependencies
 ```
 pip install -r requirements.txt
 ```
 
-### [3/4]&nbsp;Test Connection to Model
+### [3/3]&nbsp;Test Agent Tools
+
+#### 3.1. Test Connection to Model
 ```
 python3 -m src.agent.agent_tools.model
 ```
@@ -108,7 +111,7 @@ To exit just type 'exit' and press enter.
 Query model: 
 ```
 
-### [4/4]&nbsp;Test Connection to Twitter
+#### 3.2. Test Connection to Twitter
 ```
 python3 -m src.agent.agent_tools.twitter
 ```
@@ -116,6 +119,16 @@ Expected output:
 ```
 Connecting to twitter...
 Connected to user <USERNAME> with id <USER ID>.
+```
+
+#### 3.3. Test Connection to Discord
+```
+python3 -m src.agent.agent_tools.discord
+```
+Expected output:
+```
+Connecting to discord...
+Connected to bot <USERNAME> with id <USER ID>.
 ```
 
 
@@ -134,3 +147,6 @@ You can configure how your agent behaves on X (Twitter) using the `twitter_confi
 - [REQUIRED] You can configure how may times your agent posts per run using the `RESPONSES_PER_RUN` constant.
 - [OPTIONAL] You can configure your agent to only respond to posts that contain a particular key word or phrase using the `KEY_PHRASE` constant.
 - [OPTIONAL] You can enable quote mode using the `QUOTE_MODE` constant. It is disabled by default. If quote mode is enabled your agent will quote tweet all of the key user's tweets that contain the key phrase. If quote mode is enabled your agent will ignore key users' quote tweets.
+
+### Discord Configuration
+You can configure how your agent behaves on Discord using the `discord_config` module in the `discord` package in `agent_tools`.
