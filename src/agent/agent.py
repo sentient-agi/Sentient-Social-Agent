@@ -39,7 +39,7 @@ class Agent:
         if self.config.DISCORD_ENABLED:
             logging.info("Discord client starting up...")
             self.discord = Discord(
-                api_key=os.getenv("DISCORD_API_KEY"),
+                api_key=os.getenv("DISCORD_TOKEN"),
                 model = self.model
             )
 
