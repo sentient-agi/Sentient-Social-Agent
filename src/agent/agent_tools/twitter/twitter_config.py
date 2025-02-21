@@ -1,7 +1,7 @@
 class TwitterConfig:
     def __init__(self):
         # Agent will respond to tweets from these users
-        self.KEY_USERS = ["@testfollower001"]
+        self.KEY_USERS = []
 
         # Agent will respond to tweets from key users containing this key phrase
         self.KEY_PHRASE = None
