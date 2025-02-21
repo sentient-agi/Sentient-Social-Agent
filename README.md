@@ -42,14 +42,14 @@ This is a lightweight framework, with minimal dependencies, for building autonom
 For now the only platform that is supported is X (Twitter). We're going to continuously work on this framework. Discord and Telegram support are the next features in the pipeline. We also plan to add tools to support more sophisticated features, such as data sources and on-chain functionality.
 - [x] Supports any OpenAI API compatible LLM endpoint
 - [x] Supports X (Twitter)
-- [ ] Discord is coming soon...
+- [x] Supports Discord
 - [ ] Telegram is coming soon...
 - [ ] Data is coming soon...
 - [ ] Web3 is coming soon...
 
 
 # Quickstart 🚀
-### [1/3]&nbsp;&nbsp;Set Up Agent Credentials
+## [1/4]&nbsp;&nbsp;Set Up Agent Credentials
 
 > [!WARNING]
 > **We suggest creating a new X account for your agent.**
@@ -77,9 +77,9 @@ Set the user authentication settings for your app as follows:
 Generate all of the required credentials on the *Keys and tokens* page. Add them to the `.env` file.
 
 #### 1.4. Get Discord credentials
-Before you can build a Discord bot you need to create it in the Discord Developer Portal. Follow the steps in the *Creating an App* part of [this](https://discord.com/developers/docs/quick-start/getting-started#step-1-creating-an-app) guide and add your discord token to the `.env` file.
+Before you can build a Discord bot you need to create it in the Discord Developer Portal. Follow the steps in the *Creating an App* part of [this](https://discord.com/developers/docs/quick-start/getting-started#step-1-creating-an-app) guide and add your token to the `.env` file.
 
-### [2/3]&nbsp;&nbsp;Set Up Python Virtual Environment
+## [2/4]&nbsp;&nbsp;Set Up Python Virtual Environment
 > [!NOTE]
 > **These instructions are for unix-based systems (i.e. MacOS, Linux). Before you proceed, make sure that you have installed `python` and `pip`. If you have not, follow [these](https://packaging.python.org/en/latest/tutorials/installing-packages/) instructions to do so.**
 
@@ -98,7 +98,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### [3/3]&nbsp;Test Agent Tools
+## [3/4]&nbsp;Test Agent Tools
 
 #### 3.1. Test Connection to Model
 ```
@@ -118,7 +118,7 @@ python3 -m src.agent.agent_tools.twitter
 Expected output:
 ```
 Connecting to twitter...
-Connected to user <USERNAME> with id <USER ID>.
+Connected to twitter user <USERNAME> with id <USER_ID>.
 ```
 
 #### 3.3. Test Connection to Discord
@@ -128,12 +128,28 @@ python3 -m src.agent.agent_tools.discord
 Expected output:
 ```
 Connecting to discord...
-Connected to bot <USERNAME> with id <USER ID>.
+Connected to discrod bot <USERNAME> with id <USER_ID>.
 ```
 
+## [4/4]&nbsp;Run Agent Locally
+```
+python3 -m src.agent.agent
+```
+Expected output (if you have added a key user in `twitter_config` and you have enabled Twitter and Discord in `agent_config`):
+```
+INFO: Agent starting up...
+INFO: Twitter client starting up...
+INFO: Connected to twitter user <USERNAME> with id <USER_ID>.
+INFO: Discord client starting up...
+WARNING: PyNaCl is not installed, voice will NOT be supported
+INFO: Connected to discrod bot <USERNAME> with id <USER_ID>.
+```
 
 # Configuration&nbsp;&nbsp;⚙️
 All of the tools available to your agent can be found in the `agent_tools` package. Each tool has its own package and in that package there is a configuration module. To configure a tool just change the constants in its configuration module.
+
+### Agent Configuration
+You can configure your agent using the `agent_config` module in the `agent`.
 
 ### Model Configuration
 You can configure the model that your agent uses in the `model_config` in the `model` package in `agent_tools`.

@@ -55,15 +55,19 @@ class Twitter:
             consumer_secret=api_secret,
             access_token=access_token,
             access_token_secret=access_token_secret,
-            return_type = dict
+            return_type=dict
         )
-        self.user_id = self.v2api.get_me()["data"]["id"]
+        self.user = self.v2api.get_me()
+        self.username = self.user["data"]["username"]
+        self.user_id = self.user["data"]["id"]
 
         self.model = model
         self.config = TwitterConfig()
+
+        logging.info(f"Connected to twitter user @{self.username} with id {self.user_id}.")
         
         if not self.config.KEY_USERS:
-            raise Exception("You need to configure your twitter agent's key users") 
+            raise Exception("You need to configure your twitter agent's key users")
 
 
     def __build_search_query_users(self, key_users):
@@ -248,5 +252,5 @@ class Twitter:
             )
             return (True, response["data"]["id"])
         except Exception as e:
-            print(f"Error posting reply: {e}")
+            logging.exception(f"Error posting tweet: {e}")
             return (False, None)

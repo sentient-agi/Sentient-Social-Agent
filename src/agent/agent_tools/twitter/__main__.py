@@ -15,7 +15,8 @@ v2api = tweepy.Client(
     access_token_secret=os.getenv("TWITTER_ACCESS_TOKEN_SECRET"),
     return_type = dict
 )
-username = v2api.get_me()["data"]["username"]
-user_id = v2api.get_me()["data"]["id"]
+user = v2api.get_me()
+username = user["data"]["username"]
+user_id = user["data"]["id"]
 
-print(f"Connected to user @{username} with id {user_id}.")
+print(f"Connected to twitter user @{username} with id {user_id}.")
