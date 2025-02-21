@@ -1,4 +1,3 @@
-import discord
 import logging
 import os
 from dotenv import load_dotenv
@@ -39,7 +38,7 @@ class Agent:
         if self.config.DISCORD_ENABLED:
             logging.info("Discord client starting up...")
             self.discord = Discord(
-                api_key=os.getenv("DISCORD_TOKEN"),
+                token=os.getenv("DISCORD_TOKEN"),
                 model = self.model
             )
 
@@ -48,7 +47,6 @@ def main():
     try:
         logging.info("Agent starting up...")
         agent = Agent()
-        logging.info("Agent running...")
     except KeyboardInterrupt:
         logging.info("Agent shutting down...")
 

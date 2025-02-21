@@ -7,7 +7,7 @@ load_dotenv(dotenv_path=env_path)
 
 class MyClient(discord.Client):
     async def on_ready(self):
-        print(f"Connected to bot {self.user.name} with id {self.user.id}")
+        print(f"Connected to discord bot {self.user.name} with id {self.user.id}")
 
 try:
     print("Connecting to discord...")

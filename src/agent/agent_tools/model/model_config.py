@@ -6,7 +6,7 @@ class ModelConfig:
         # Identifier for specific model that should be used
         self.MODEL = "accounts/sentientfoundation/models/dobby-unhinged-llama-3-3-70b-new"
 
-        #  Temperature setting for response randomness
+        # Temperature setting for response randomness
         self.TEMPERATURE = 0.0
 
         # Maximum number of tokens for responses

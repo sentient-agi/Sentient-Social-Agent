@@ -2,13 +2,15 @@ import discord
 import logging
 from .discord_config import DiscordConfig
 
+
 logger = logging.getLogger(__name__)
-logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.INFO)
+logger.setLevel(logging.INFO)
+logging.basicConfig(format="%(levelname)s: %(message)s")
 
 class Discord(discord.Client):
     def __init__(
             self,
-            api_key,
+            token,
             model):
         self.model = model
 
@@ -17,11 +19,11 @@ class Discord(discord.Client):
         intents = discord.Intents.default()
         intents.message_content = True
         super().__init__(intents=intents)
-        super().run(api_key)
+        super().run(token, log_level=logging.WARNING)
 
 
     async def on_ready(self):
-        logging.info(f'Logged in as {self.user} (ID: {self.user.id})')
+        logging.info(f"Connected to discord bot {self.user.name} with id {self.user.id}.")
 
 
     async def on_message(self, message):
