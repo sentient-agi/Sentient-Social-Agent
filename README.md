@@ -38,7 +38,7 @@ This is a lightweight framework, with minimal dependencies, for building autonom
 
 
 # Features 🦾
-For now the only platform that is supported is X (Twitter). We're going to continuously work on this framework. Discord and Telegram support are the next features in the pipeline. We also plan to add tools to support more sophisticated features, such as data sources and on-chain functionality.
+For now the only platforms that are supported are X (Twitter) and Discord. We're going to continuously work on this framework. Telegram support is the next feature in the pipeline. We also plan to add tools to support more sophisticated features, such as data sources and on-chain functionality.
 - [x] Supports any OpenAI API compatible LLM endpoint
 - [x] Supports X (Twitter)
 - [x] Supports Discord
@@ -48,7 +48,7 @@ For now the only platform that is supported is X (Twitter). We're going to conti
 
 
 # Quickstart 🚀
-## [1/4]&nbsp;&nbsp;Set Up Agent Credentials
+### [1/4]&nbsp;&nbsp;Set Up Agent Credentials
 
 > [!WARNING]
 > **We suggest creating a new X account for your agent.**
@@ -79,7 +79,7 @@ Generate all of the required credentials on the *Keys and tokens* page. Add them
 Before you can build a Discord bot you need to create it in the Discord Developer Portal. Follow the steps in the *Creating an App* part of [this](https://discord.com/developers/docs/quick-start/getting-started#step-1-creating-an-app) guide and add your token to the `.env` file.
 
 
-## [2/4]&nbsp;&nbsp;Set Up Python Virtual Environment
+### [2/4]&nbsp;&nbsp;Set Up Python Virtual Environment
 > [!NOTE]
 > **These instructions are for unix-based systems (i.e. MacOS, Linux). Before you proceed, make sure that you have installed `python` and `pip`. If you have not, follow [these](https://packaging.python.org/en/latest/tutorials/installing-packages/) instructions to do so.**
 
@@ -99,7 +99,7 @@ pip install -r requirements.txt
 ```
 
 
-## [3/4]&nbsp;Test Agent Tools
+### [3/4]&nbsp;Test Agent Tools
 
 #### 3.1. Test Connection to Model
 ```
@@ -133,7 +133,7 @@ Connected to discrod bot <USERNAME> with id <USER_ID>.
 ```
 
 
-## [4/4]&nbsp;Run Agent Locally
+### [4/4]&nbsp;Run Agent Locally
 ```
 python3 -m src.agent.agent
 ```
