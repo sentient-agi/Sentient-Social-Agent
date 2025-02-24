@@ -34,12 +34,11 @@
 </p>
 
 <h1 align="center">Autonomous Agents</h1>
-
 This is a lightweight framework, with minimal dependencies, for building autonomous AI agents for social platforms. Aligned with Sentient's mission, this library is open to community contributions. Create an issue to ask a question or open a PR to add a feature!
 
 
 # Features 🦾
-For now the only platform that is supported is X (Twitter). We're going to continuously work on this framework. Discord and Telegram support are the next features in the pipeline. We also plan to add tools to support more sophisticated features, such as data sources and on-chain functionality.
+For now the only platforms that are supported are X (Twitter) and Discord. We're going to continuously work on this framework. Telegram support is the next feature in the pipeline. We also plan to add tools to support more sophisticated features, such as data sources and on-chain functionality.
 - [x] Supports any OpenAI API compatible LLM endpoint
 - [x] Supports X (Twitter)
 - [x] Supports Discord
@@ -49,7 +48,7 @@ For now the only platform that is supported is X (Twitter). We're going to conti
 
 
 # Quickstart 🚀
-## [1/4]&nbsp;&nbsp;Set Up Agent Credentials
+### [1/4]&nbsp;&nbsp;Set Up Agent Credentials
 
 > [!WARNING]
 > **We suggest creating a new X account for your agent.**
@@ -60,10 +59,10 @@ Create the `.env` file by copying the contents of `.env.example`. This is where 
 cp .env.example .env
 ```
 
-#### 1.2. Get model credentials
-Add your Fireworks, or other inference provider, API key to the `.env` file.
+#### 1.2. Add model credentials
+Add your Fireworks API key to the `.env` file (you can also use any other OpenAI compatible inference provider).
 
-#### 1.3. Get X (Twitter) credentials
+#### 1.3. Add X (Twitter) credentials
 In order to interact with the X (Twitter) API, your agent needs developer credentials from the X (Twitter) developer portal [here](https://developer.x.com/en/portal/dashboard).
 
 From the *Dashboard* page, click on the gear icon to access the *Settings* page for your default project.
@@ -76,10 +75,11 @@ Set the user authentication settings for your app as follows:
 
 Generate all of the required credentials on the *Keys and tokens* page. Add them to the `.env` file.
 
-#### 1.4. Get Discord credentials
+#### 1.4. Add Discord credentials
 Before you can build a Discord bot you need to create it in the Discord Developer Portal. Follow the steps in the *Creating an App* part of [this](https://discord.com/developers/docs/quick-start/getting-started#step-1-creating-an-app) guide and add your token to the `.env` file.
 
-## [2/4]&nbsp;&nbsp;Set Up Python Virtual Environment
+
+### [2/4]&nbsp;&nbsp;Set Up Python Virtual Environment
 > [!NOTE]
 > **These instructions are for unix-based systems (i.e. MacOS, Linux). Before you proceed, make sure that you have installed `python` and `pip`. If you have not, follow [these](https://packaging.python.org/en/latest/tutorials/installing-packages/) instructions to do so.**
 
@@ -98,7 +98,8 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## [3/4]&nbsp;Test Agent Tools
+
+### [3/4]&nbsp;Test Agent Tools
 
 #### 3.1. Test Connection to Model
 ```
@@ -131,7 +132,8 @@ Connecting to discord...
 Connected to discrod bot <USERNAME> with id <USER_ID>.
 ```
 
-## [4/4]&nbsp;Run Agent Locally
+
+### [4/4]&nbsp;Run Agent Locally
 ```
 python3 -m src.agent.agent
 ```
@@ -145,24 +147,59 @@ WARNING: PyNaCl is not installed, voice will NOT be supported
 INFO: Connected to discrod bot <USERNAME> with id <USER_ID>.
 ```
 
-# Configuration&nbsp;&nbsp;⚙️
-All of the tools available to your agent can be found in the `agent_tools` package. Each tool has its own package and in that package there is a configuration module. To configure a tool just change the constants in its configuration module.
 
+# Configuration ⚙️
 ### Agent Configuration
 You can configure your agent using the `agent_config` module in the `agent`.
 
 ### Model Configuration
 You can configure the model that your agent uses in the `model_config` in the `model` package in `agent_tools`.
-- [OPTIONAL] You can change the model that is used using the `BASE_URL` and `MODEL` constants. By default your agent will use Dobby 8b Unhinged, but the framework supports all OpenAI API compatible LLM endpoints.
-- [OPTIONAL] You can configure the model that is used using the `TEMPERATURE`, `MAX_TOKENS` and `SYSTEM_PROMPT` constants, however the default values are likely suitable for most agents.
-
+- You can change the model that is used using the `BASE_URL` and `MODEL` constants. By default your agent will use Dobby 8b Unhinged, but the framework supports all OpenAI API compatible LLM endpoints.
+- You can configure the model that is used using the `TEMPERATURE`, `MAX_TOKENS` and `SYSTEM_PROMPT` constants, however the default values are likely suitable for most agents.
 
 ### X (Twitter) Configuration
 You can configure how your agent behaves on X (Twitter) using the `twitter_config` module in the `twitter` package in `agent_tools`.
-- [REQUIRED] You can configure the users with which your agent will interact using the `KEY_USERS` constant. By default your agent will respond to tweets from these key users.
-- [REQUIRED] You can configure how may times your agent posts per run using the `RESPONSES_PER_RUN` constant.
-- [OPTIONAL] You can configure your agent to only respond to posts that contain a particular key word or phrase using the `KEY_PHRASE` constant.
-- [OPTIONAL] You can enable quote mode using the `QUOTE_MODE` constant. It is disabled by default. If quote mode is enabled your agent will quote tweet all of the key user's tweets that contain the key phrase. If quote mode is enabled your agent will ignore key users' quote tweets.
+- You must configure the users with which your agent will interact using the `KEY_USERS` constant. By default your agent will respond to tweets from these key users.
+- You must configure how may times your agent posts per run using the `RESPONSES_PER_RUN` constant.
+- You can configure your agent to only respond to posts that contain a particular key word or phrase using the `KEY_PHRASE` constant.
+- You can enable quote mode using the `QUOTE_MODE` constant. It is disabled by default. If quote mode is enabled your agent will quote tweet all of the key user's tweets that contain the key phrase. If quote mode is enabled your agent will ignore key users' quote tweets.
+- You can enable post mode using the `POST_MODE` constant. It is disabled by default. If post mode is enabled your agent will post a tweet every time it runs.
+- You can configure the prompt that is provided to the model to generate a post using the `POST_PROMPT` constant.
+- You can configure the prompt that is provided to the model to generate a response using the `RESPONSE_PROMPT` constant.
 
 ### Discord Configuration
 You can configure how your agent behaves on Discord using the `discord_config` module in the `discord` package in `agent_tools`.
+
+
+# Extensibility&nbsp;&nbsp;🛠️
+### Adding a new tool
+This agent framework is designed to be easily extensible. The `agent` class will automatically discover and initialize tools that are in the `agent_tools` directory. However, you need to follow these conventions when adding a new tool:
+1. Each tool must have a corresponding `<TOOL_NAME>_ENABLED` boolean flag in the `agent_config` module.
+2. Each tool must have its own directory within `agent_tools`.
+3. Each tool must have a main module that is named `<tool_name>.py`.
+    - Within the main module, the main class name must be the capitalized version of the directory name.
+    - The main class must have an `__init__` method that will be called when the tool is initialized.
+        - The `__init__` method should take the secrets and the model as arguments.
+        - Each secret should be stored in the `.env` file and named `<TOOL_NAME>_<SECRET_NAME>` where `<SECRET_NAME>` is the name of the corresponding argument in the `__init__` method.
+    - The main class must have a `run` method that will be called when the tool is run.
+4. Each tool must have a configuration module that is named `<tool_name>_config.py`.
+    - The configuration module must have a `<Tool_name>Config` class.
+5. If you install a new package, you must update the `requirements.txt` file:
+    ```
+    pip freeze > requirements.txt
+    ``` 
+
+For example, consider the twitter tool:
+1. There is a `TWITTER_ENABLED` boolean flag in the `agent_config` module.
+2. There is a twitter directory in `agent_tools`.
+3. There is a main module `twitter.py`.
+    - There is a `Twitter` class in `twitter.py`.
+    - The `Twitter` class has an `__init__` method that takes the secrets and the model as arguments. The secrets are stored in the `.env` file and are prefixed with `TWITTER_`.
+        - `consumer_key` corresponds to the `TWITTER_CONSUMER_KEY` environment variable.
+        - `consumer_secret` corresponds to the `TWITTER_CONSUMER_SECRET` environment variable.
+        - `access_token` corresponds to the `TWITTER_ACCESS_TOKEN` environment variable.
+        - `access_token_secret` corresponds to the `TWITTER_ACCESS_TOKEN_SECRET` environment variable.
+        - `bearer_token` corresponds to the `TWITTER_BEARER_TOKEN` environment variable.
+    - The `Twitter` class has a `run` method that is called to run the tool.
+4. There is a configuration module `twitter_config.py`.
+    - There is a `TwitterConfig` class in `twitter_config.py`.
