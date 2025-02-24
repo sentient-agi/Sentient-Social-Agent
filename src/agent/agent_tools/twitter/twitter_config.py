@@ -1,7 +1,7 @@
 class TwitterConfig:
     def __init__(self):
         # Agent will respond to tweets from these users every time that it runs
-        self.KEY_USERS = ["testfollower001"]
+        self.KEY_USERS = []
 
         # Agent will respond to tweets from key users containing this key 
         # phrase every time that it runs
@@ -22,7 +22,7 @@ class TwitterConfig:
         self.RESPONSE_PROMPT = "Respond to this twitter conversation using less than 280 characters. Do not use hashtags."
 
         # Agent will post this number of respones per run
-        self.RESPONSES_PER_RUN = 10
+        self.RESPONSES_PER_RUN = 1
        
         # Agent will run this number of times per day
-        self.RUNS_PER_DAY = 96
+        self.RUNS_PER_DAY = 12
