@@ -1,5 +1,7 @@
 import datetime
 import logging
+import schedule
+import time
 import tweepy
 from pprint import pformat
 from .twitter_config import TwitterConfig
@@ -28,8 +30,8 @@ class Twitter:
 
     def __init__(
             self,
-            api_key,
-            api_secret,
+            consumer_key,
+            consumer_secret,
             access_token,
             access_token_secret,
             bearer_token,
@@ -49,14 +51,17 @@ class Twitter:
         Sets up the Tweepy client for both OAuth 1.0a and OAuth 2.0 
         authentication and retrieves the authenticated user's ID.
         """
+        logger.info("Initializing Twitter client...")
         self.v2api = tweepy.Client(
             bearer_token=bearer_token,
-            consumer_key=api_key,
-            consumer_secret=api_secret,
+            consumer_key=consumer_key,
+            consumer_secret=consumer_secret,
             access_token=access_token,
             access_token_secret=access_token_secret,
             return_type=dict
         )
+        
+        logger.info("Starting Twitter client...")
         self.user = self.v2api.get_me()
         self.username = self.user["data"]["username"]
         self.user_id = self.user["data"]["id"]
@@ -64,10 +69,31 @@ class Twitter:
         self.model = model
         self.config = TwitterConfig()
 
-        logging.info(f"Connected to twitter user @{self.username} with id {self.user_id}.")
+        # Calculate interval in minutes between runs
+        self.interval = 1440.0 / self.config.RUNS_PER_DAY
+
+        logging.info(f"[TWITTER] Connected to twitter user @{self.username} with id {self.user_id}.")
         
         if not self.config.KEY_USERS:
-            raise Exception("You need to configure your twitter agent's key users")
+            raise Exception("[TWITTER] You need to configure your twitter agent's key users")
+        if not self.config.RUNS_PER_DAY:
+            raise Exception("[TWITTER] You need to configure your twitter agent's runs per day")
+
+
+    def run(self):
+        def job():
+            self.respond_to_key_users()
+            if self.config.POST_MODE:
+                self.post_tweet()
+
+        job()
+        
+        # Schedule job to run at calculated interval
+        schedule.every(self.interval).minutes.do(job)
+
+        while True:
+            schedule.run_pending()
+            time.sleep(60)
 
 
     def __build_search_query_users(self, key_users):
@@ -104,7 +130,7 @@ class Twitter:
             query += self.__build_search_query_key_phrase()
         if self.config.QUOTE_MODE:
             query += self.__build_search_query_ignore_quotes()
-        logging.debug(f"Twitter search query: {query}")
+        logging.debug(f"[TWITTER] Twitter search query: {query}")
 
         # Search for tweets
         response = self.v2api.search_recent_tweets(
@@ -113,18 +139,18 @@ class Twitter:
             tweet_fields=["created_at","author_id","conversation_id", "public_metrics"],
             expansions=["author_id","referenced_tweets.id"]
         )
-        logging.debug(f"Twitter search results: {response}")
+        logging.debug(f"[TWITTER] Twitter search results: {response}")
 
         if not response.get("data", False):
             return {}
 
         # Create authors lookup dict
         authors = {user["id"]: user["username"] for user in response["includes"]["users"]}
-        logging.debug(f"Authors look up dictionary: {authors}")
+        logging.debug(f"[TWITTER] Authors look up dictionary: {authors}")
 
         # Create tweets lookup dict
         tweets = {tweet["id"]: tweet for tweet in response["data"]}
-        logging.debug(f"Tweets look up dictionary: {tweets}")
+        logging.debug(f"[TWITTER] Tweets look up dictionary: {tweets}")
 
         conversations = {}
         for tweet in tweets.values():
@@ -175,16 +201,16 @@ class Twitter:
         return conversations
 
 
-    def __get_relevant_conversations(self, hours=168):
+    def __get_relevant_conversations(self):
         """Fetches all conversations involving key_users in past `hours`"""
 
-        logging.debug(f"Key users: {self.config.KEY_USERS}")
-        logging.info(f"Fetching relevant conversations from past {hours}hrs...")
+        logging.debug(f"[TWITTER] Key users: {self.config.KEY_USERS}")
+        logging.info(f"[TWITTER] Fetching relevant conversations from past {self.interval} minutes...")
 
-        start_time = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(hours=hours)
+        start_time = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(minutes=self.interval)
         relevant_conversations = self.__search_for_relevant_conversations(start_time=start_time)
 
-        logging.info("Relevant conversations:")
+        logging.info(f"[TWITTER] Relevant conversations:")
         if relevant_conversations:
             logging.info(pformat(relevant_conversations))
         return relevant_conversations
@@ -206,40 +232,40 @@ class Twitter:
     def respond_to_key_users(self):
         """Responds to tweets by key users"""
 
-        logging.info("Responding to key users...")
+        logging.info(f"[TWITTER] Responding to key users...")
         relevant_conversations = self.__get_relevant_conversations()
         response_count = 0
 
         # Terminate if there are no relevant conversations
         if not relevant_conversations:
-            logging.info("No conversations to respond to.")
+            logging.info(f"[TWITTER] No conversations to respond to.")
             return
         
         for user_conversations in relevant_conversations.values():
             for conversation in user_conversations.values():
                 # Terminate if bot has already responded to max no of tweets
                 if response_count >= self.config.RESPONSES_PER_RUN:
-                    logging.info(f"Responded to max responses.")
+                    logging.info(f"[TWITTER] Responded to max responses.")
                     break
 
                 conversation_id = conversation[0]["conversation_id"]
-                logging.info(f"Responding to conversation {conversation_id}...")
+                logging.info(f"[TWITTER] Responding to conversation {conversation_id}...")
 
                 prompt = f"{self.config.RESPONSE_PROMPT} {conversation}"
                 try:
                     # Generate response using model and remove quotation marks
                     response = self.model.query(prompt)
-                    logging.info(f"Response: {response}")
+                    logging.info(f"[TWITTER] Response: {response}")
                 
                     # Post response
-                    logging.info("Posting response...")
+                    logging.info(f"[TWITTER] Posting response...")
                     self.__respond_to_conversation(conversation, response)
                     response_count += 1
 
                 except Exception as e:
-                    logging.exception(f"Error responding to conversation {conversation_id}. {e}")
+                    logging.exception(f"[TWITTER] Error responding to conversation {conversation_id}. {e}")
                 
-        logging.info("Successfully responded to relevant conversations.")
+        logging.info(f"[TWITTER] Successfully responded to relevant conversations.")
 
 
     def post_tweet(self, post_text, in_reply_to_tweet_id=None, quote_tweet_id=None):
@@ -252,5 +278,5 @@ class Twitter:
             )
             return (True, response["data"]["id"])
         except Exception as e:
-            logging.exception(f"Error posting tweet: {e}")
+            logging.exception(f"[TWITTER] Error posting tweet: {e}")
             return (False, None)
