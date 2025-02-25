@@ -135,7 +135,7 @@ Connected to discrod bot <USERNAME> with id <USER_ID>.
 
 ### [4/4]&nbsp;Run Agent Locally
 ```
-python3 -m src.agent.agent
+python3 -m src.agent
 ```
 Expected output (if you have added a key user in `twitter_config` and you have enabled Twitter and Discord in `agent_config`):
 ```

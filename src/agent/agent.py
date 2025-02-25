@@ -84,16 +84,3 @@ class Agent:
         # Wait for all threads to finish
         for thread in threads:
             thread.join()
-
-
-def main():
-    try:
-        agent = Agent()
-        agent.run()
-    except KeyboardInterrupt:
-        logging.info("[AGENT] Agent shutting down...")
-        exit()
-
-
-if __name__ == "__main__":
-    main()

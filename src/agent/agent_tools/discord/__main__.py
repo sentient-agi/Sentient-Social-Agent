@@ -11,11 +11,18 @@ class MyClient(discord.Client):
 
 try:
     print("Connecting to discord...")
+
+    # Check that all credentials are present
+    token = os.getenv("DISCORD_TOKEN", None)
+    if not token:
+        raise Exception("Please add your discord token to the .env file.")
+
+    # Initialize discord client
     intents = discord.Intents.default()
     intents.message_content = True
 
     client = MyClient(intents=intents)
-    client.run(os.getenv("DISCORD_TOKEN"), log_handler=None)
+    client.run(token, log_handler=None)
 
     print()
     print("Disconnecting from discord...")
