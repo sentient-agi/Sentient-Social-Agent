@@ -10,7 +10,7 @@ try:
     
     api_key=os.getenv("MODEL_API_KEY", None)
     if not api_key:
-        raise Exception("Please add your api key to the .env file.")
+        raise Exception("Please add your fireworks api key to the .env file.")
 
     model = Model(
         api_key=os.getenv("MODEL_API_KEY", None)

@@ -51,7 +51,7 @@ class Twitter:
         Sets up the Tweepy client for both OAuth 1.0a and OAuth 2.0 
         authentication and retrieves the authenticated user's ID.
         """
-        logger.info("Initializing Twitter client...")
+        logger.info("[TWITTER] Initializing Twitter client...")
         self.v2api = tweepy.Client(
             bearer_token=bearer_token,
             consumer_key=consumer_key,
@@ -61,7 +61,7 @@ class Twitter:
             return_type=dict
         )
         
-        logger.info("Starting Twitter client...")
+        logger.info("[TWITTER] Starting Twitter client...")
         self.user = self.v2api.get_me()
         self.username = self.user["data"]["username"]
         self.user_id = self.user["data"]["id"]
@@ -87,7 +87,7 @@ class Twitter:
                 self.post_tweet()
 
         job()
-        
+
         # Schedule job to run at calculated interval
         schedule.every(self.interval).minutes.do(job)
 
