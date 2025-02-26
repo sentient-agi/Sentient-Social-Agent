@@ -1,3 +1,4 @@
+<!-- Sentient Banner -->
 <p align="center">
   <img src="banner.png"/>
 </p>
@@ -17,28 +18,34 @@
     </a>
     <!-- Hugging face -->
     <a href="https://huggingface.co/Sentientagi">
-        <img src="https://img.shields.io/badge/Hugging_Face-SentientAGI-ffc107?style=sociak&logo=huggingface"/>
+        <img src="https://img.shields.io/badge/Hugging_Face-SentientAGI-yellow?style=sociak&logo=huggingface"/>
     </a>
 </p>
 
 <!-- Github Repo Info -->
 <p align="center">
     <!-- Release -->
-    <a href="https://github.com/sentient-agi/autonomous-agents/releases">
-        <img alt="GitHub release" src="https://img.shields.io/badge/Release-v1.0-green">
+    <a href="https://github.com/sentient-agi/Sentient-Agent-Framework/releases">
+        <img alt="GitHub release" src="https://img.shields.io/badge/Release-Beta-yellow">
     </a>
     <!-- License -->
-    <a href="https://github.com/sentient-agi/autonomous-agents/tree/main?tab=Apache-2.0-1-ov-file">
-        <img alt="License" src="https://img.shields.io/badge/License-Apache_2.0-red">
+    <a href="https://github.com/sentient-agi/Sentient-Agent-Framework/tree/main?tab=Apache-2.0-1-ov-file">
+        <img alt="License" src="https://img.shields.io/badge/License-Apache_2.0-green">
     </a>
 </p>
 
-<h1 align="center">Autonomous Agents</h1>
-This is a lightweight framework, with minimal dependencies, for building autonomous AI agents for social platforms. Aligned with Sentient's mission, this library is open to community contributions. Create an issue to ask a question or open a PR to add a feature!
+
+<h1 align="center">Sentient Agent Framework</h1>
+
+> [!NOTE]
+> **This framework is currently in beta.**
+
+The Sentient Agent Framework is a lightweight framework, with minimal dependencies, for building autonomous AI agents for social platforms. Aligned with Sentient's mission, the framework is designed to be easily extensible and it is open to community contributions. Create an issue to ask a question or open a PR to add a feature!
+
 
 
 # Features 🦾
-For now the only platforms that are supported are X (Twitter) and Discord. We're going to continuously work on this framework. Telegram support is the next feature in the pipeline. We also plan to add tools to support more sophisticated features, such as data sources and on-chain functionality.
+For now the only platforms that are supported by the framework are X (Twitter) and Discord. We're going to continuously work on this framework. If there is a tool or platform that you would like to see supported, please create an issue or, better yet, get coding and open a PR! Telegram support is the next feature in the pipeline. We also plan to add tools to support more sophisticated features, such as data sources and on-chain functionality.
 - [x] Supports any OpenAI API compatible LLM endpoint
 - [x] Supports X (Twitter)
 - [x] Supports Discord
@@ -47,10 +54,11 @@ For now the only platforms that are supported are X (Twitter) and Discord. We're
 - [ ] Web3 is coming soon...
 
 
+
 # Quickstart 🚀
 ### [1/4]&nbsp;&nbsp;Set Up Agent Credentials
 
-> [!WARNING]
+> [!NOTE]
 > **We suggest creating a new X account for your agent.**
 
 #### 1.1. Create secrets file
@@ -100,7 +108,6 @@ pip install -r requirements.txt
 
 
 ### [3/4]&nbsp;Test Agent Tools
-
 #### 3.1. Test Connection to Model
 ```
 python3 -m src.agent.agent_tools.model
@@ -148,32 +155,13 @@ INFO: Connected to discrod bot <USERNAME> with id <USER_ID>.
 ```
 
 
+
 # Configuration ⚙️
-### Agent Configuration
-You can configure your agent using the `agent_config` module in the `agent`.
+### Configurating Exisiting Tools
+You can enable and disable tools in the `agent_config` module in the `agent` package. Each tool can be configured using its configuration module that is located in the tool's directory in the `agent_tools` directory. Each tool also has its own README file that describes its configuration options.
 
-### Model Configuration
-You can configure the model that your agent uses in the `model_config` in the `model` package in `agent_tools`.
-- You can change the model that is used using the `BASE_URL` and `MODEL` constants. By default your agent will use Dobby 8b Unhinged, but the framework supports all OpenAI API compatible LLM endpoints.
-- You can configure the model that is used using the `TEMPERATURE`, `MAX_TOKENS` and `SYSTEM_PROMPT` constants, however the default values are likely suitable for most agents.
-
-### X (Twitter) Configuration
-You can configure how your agent behaves on X (Twitter) using the `twitter_config` module in the `twitter` package in `agent_tools`.
-- You must configure the users with which your agent will interact using the `KEY_USERS` constant. By default your agent will respond to tweets from these key users.
-- You must configure how may times your agent posts per run using the `RESPONSES_PER_RUN` constant.
-- You can configure your agent to only respond to posts that contain a particular key word or phrase using the `KEY_PHRASE` constant.
-- You can enable quote mode using the `QUOTE_MODE` constant. It is disabled by default. If quote mode is enabled your agent will quote tweet all of the key user's tweets that contain the key phrase. If quote mode is enabled your agent will ignore key users' quote tweets.
-- You can enable post mode using the `POST_MODE` constant. It is disabled by default. If post mode is enabled your agent will post a tweet every time it runs.
-- You can configure the prompt that is provided to the model to generate a post using the `POST_PROMPT` constant.
-- You can configure the prompt that is provided to the model to generate a response using the `RESPONSE_PROMPT` constant.
-
-### Discord Configuration
-You can configure how your agent behaves on Discord using the `discord_config` module in the `discord` package in `agent_tools`.
-
-
-# Extensibility&nbsp;&nbsp;🛠️
-### Adding a new tool
-This agent framework is designed to be easily extensible. The `agent` class will automatically discover and initialize tools that are in the `agent_tools` directory. However, you need to follow these conventions when adding a new tool:
+### Adding New Tools
+The `agent` class will automatically discover and initialize tools that are in the `agent_tools` directory. However, you need to follow these conventions when adding a new tool:
 1. Each tool must have a corresponding `<TOOL_NAME>_ENABLED` boolean flag in the `agent_config` module.
 2. Each tool must have its own directory within `agent_tools`.
 3. Each tool must have a main module that is named `<tool_name>.py`.
@@ -184,7 +172,8 @@ This agent framework is designed to be easily extensible. The `agent` class will
     - The main class must have a `run` method that will be called when the tool is run.
 4. Each tool must have a configuration module that is named `<tool_name>_config.py`.
     - The configuration module must have a `<Tool_name>Config` class.
-5. If you install a new package, you must update the `requirements.txt` file:
+5. Each tool must have a README file that describes the configuration options.
+6. If you install a new package, you must update the `requirements.txt` file:
     ```
     pip freeze > requirements.txt
     ``` 
@@ -203,3 +192,4 @@ For example, consider the twitter tool:
     - The `Twitter` class has a `run` method that is called to run the tool.
 4. There is a configuration module `twitter_config.py`.
     - There is a `TwitterConfig` class in `twitter_config.py`.
+5. There is a README file `twitter/README.md` that describes the configuration options.
