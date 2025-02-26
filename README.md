@@ -157,7 +157,7 @@ INFO: Connected to discrod bot <USERNAME> with id <USER_ID>.
 
 
 # Configuration ⚙️
-### Agent Configuration
+### Configurating Exisiting Tools
 You can enable and disable tools in the `agent_config` module in the `agent` package. Each tool can be configured using its configuration module that is located in the tool's directory in the `agent_tools` directory. Each tool also has its own README file that describes its configuration options.
 
 ### Adding New Tools
