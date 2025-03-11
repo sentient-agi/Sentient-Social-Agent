@@ -5,6 +5,7 @@ import time
 import tweepy
 from pprint import pformat
 from .twitter_config import TwitterConfig
+from .twitter_utils import with_rate_limit_handling
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.INFO)
@@ -82,9 +83,25 @@ class Twitter:
 
     def run(self):
         def job():
-            self.respond_to_key_users()
+             # Only respond if RESPOND_MODE is enabled
+            if getattr(self.config, 'RESPOND_MODE', True):
+                self.respond_to_key_users()
+            
+        # Post if POST_MODE is enabled
             if self.config.POST_MODE:
-                self.post_tweet()
+                try:
+                    # Generate post text
+                    post_text = self.model.query(self.config.POST_PROMPT)
+                    logging.info(f"[TWITTER] Generated post: {post_text}")
+                    
+                    # Post the tweet
+                    result, tweet_id = self.post_tweet(post_text)
+                    if result:
+                        logging.info(f"[TWITTER] Successfully posted tweet with ID: {tweet_id}")
+                    else:
+                        logging.error("[TWITTER] Failed to post tweet")
+                except Exception as e:
+                    logging.exception(f"[TWITTER] Error in posting tweet: {e}")
 
         job()
 
@@ -115,7 +132,7 @@ class Twitter:
         """Returns a twitter search query that ignores quotes"""
         return " -is:quote"
 
-
+    @with_rate_limit_handling
     def __search_for_relevant_conversations(self, start_time=None):
         """
         Gets tweets from key users or from specific conversations.
