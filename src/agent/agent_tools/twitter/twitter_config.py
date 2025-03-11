@@ -1,5 +1,9 @@
 class TwitterConfig:
     def __init__(self):
+        
+         # Set this to False to disable responding to tweets
+        self.RESPOND_MODE = False
+        
         # Agent will respond to tweets from these users every time that it runs
         self.KEY_USERS = []
 
@@ -25,4 +29,4 @@ class TwitterConfig:
         self.RESPONSES_PER_RUN = 1
        
         # Agent will run this number of times per day
-        self.RUNS_PER_DAY = 12
+        self.RUNS_PER_DAY = 4
