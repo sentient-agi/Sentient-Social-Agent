@@ -29,7 +29,7 @@
         <img alt="GitHub release" src="https://img.shields.io/badge/Release-Beta-yellow">
     </a>
     <!-- License -->
-    <a href="https://github.com/sentient-agi/Sentient-Agent-Framework/tree/main?tab=Apache-2.0-1-ov-file">
+    <a href="https://github.com/sentient-agi/Sentient-Agent-Framework/blob/main/LICENSE">
         <img alt="License" src="https://img.shields.io/badge/License-Apache_2.0-green">
     </a>
 </p>
@@ -136,7 +136,7 @@ python3 -m src.agent.agent_tools.discord
 Expected output:
 ```
 Connecting to discord...
-Connected to discrod bot <USERNAME> with id <USER_ID>.
+Connected to discord bot <USERNAME> with id <USER_ID>.
 ```
 
 
@@ -151,13 +151,13 @@ INFO: Twitter client starting up...
 INFO: Connected to twitter user <USERNAME> with id <USER_ID>.
 INFO: Discord client starting up...
 WARNING: PyNaCl is not installed, voice will NOT be supported
-INFO: Connected to discrod bot <USERNAME> with id <USER_ID>.
+INFO: Connected to discord bot <USERNAME> with id <USER_ID>.
 ```
 
 
 
 # Configuration ⚙️
-### Configurating Exisiting Tools
+### Configuring Existing Tools
 You can enable and disable tools in the `agent_config` module in the `agent` package. Each tool can be configured using its configuration module that is located in the tool's directory in the `agent_tools` directory. Each tool also has its own README file that describes its configuration options.
 
 ### Adding New Tools
