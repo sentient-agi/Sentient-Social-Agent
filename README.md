@@ -135,7 +135,7 @@ python3 -m src.agent.agent_tools.discord
 Expected output:
 ```
 Connecting to discord...
-Connected to discrod bot <USERNAME> with id <USER_ID>.
+Connected to discord bot <USERNAME> with id <USER_ID>.
 ```
 
 
@@ -150,7 +150,7 @@ INFO: Twitter client starting up...
 INFO: Connected to twitter user <USERNAME> with id <USER_ID>.
 INFO: Discord client starting up...
 WARNING: PyNaCl is not installed, voice will NOT be supported
-INFO: Connected to discrod bot <USERNAME> with id <USER_ID>.
+INFO: Connected to discord bot <USERNAME> with id <USER_ID>.
 ```
 
 
