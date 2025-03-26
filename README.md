@@ -25,27 +25,27 @@
 <!-- Github Repo Info -->
 <p align="center">
     <!-- Release -->
-    <a href="https://github.com/sentient-agi/Sentient-Agent-Framework/releases">
+    <a href="https://github.com/sentient-agi/Sentient-Social-Agent/releases">
         <img alt="GitHub release" src="https://img.shields.io/badge/Release-Beta-yellow">
     </a>
     <!-- License -->
-    <a href="https://github.com/sentient-agi/Sentient-Agent-Framework/tree/main?tab=Apache-2.0-1-ov-file">
+    <a href="https://github.com/sentient-agi/Sentient-Social-Agent/tree/main?tab=Apache-2.0-1-ov-file">
         <img alt="License" src="https://img.shields.io/badge/License-Apache_2.0-green">
     </a>
 </p>
 
 
-<h1 align="center">Sentient Agent Framework</h1>
+<h1 align="center">Sentient Social Agent</h1>
 
-> [!NOTE]
-> **This framework is currently in beta.**
+> [!WARNING]
+> **This agent is for demonstration purposes only and is not suitable for production use.**
 
-The Sentient Agent Framework is a lightweight framework, with minimal dependencies, for building autonomous AI agents for social platforms. Aligned with Sentient's mission, the framework is designed to be easily extensible and it is open to community contributions. Create an issue to ask a question or open a PR to add a feature!
+This is an example of a lightweight social agent, with minimal dependencies. Aligned with Sentient's mission, the agent is designed to be easily extensible and it is open to community contributions. Create an issue to ask a question or open a PR to add a feature!
 
 
 
 # Features 🦾
-For now the only platforms that are supported by the framework are X (Twitter) and Discord. We're going to continuously work on this framework. If there is a tool or platform that you would like to see supported, please create an issue or, better yet, get coding and open a PR! Telegram support is the next feature in the pipeline. We also plan to add tools to support more sophisticated features, such as data sources and on-chain functionality.
+For now the only platforms that are supported by the agent are X (Twitter) and Discord. We're going to continuously work on this agent. If there is a tool or platform that you would like to see supported, please create an issue or, better yet, get coding and open a PR! Telegram support is the next feature in the pipeline. We also plan to add tools to support more sophisticated features, such as data sources and on-chain functionality.
 - [x] Supports any OpenAI API compatible LLM endpoint
 - [x] Supports X (Twitter)
 - [x] Supports Discord
@@ -56,10 +56,11 @@ For now the only platforms that are supported by the framework are X (Twitter) a
 
 
 # Quickstart 🚀
-### [1/4]&nbsp;&nbsp;Set Up Agent Credentials
 
 > [!NOTE]
-> **We suggest creating a new X account for your agent.**
+> **These instructions are for unix-based systems (i.e. MacOS, Linux). Before you proceed, make sure that you have installed `python` and `pip`. If you have not, follow [these](https://packaging.python.org/en/latest/tutorials/installing-packages/) instructions to do so.**
+
+### [1/4]&nbsp;&nbsp;Set Up Agent Credentials
 
 #### 1.1. Create secrets file
 Create the `.env` file by copying the contents of `.env.example`. This is where you will store all of your agent's credentials.
@@ -88,8 +89,6 @@ Before you can build a Discord bot you need to create it in the Discord Develope
 
 
 ### [2/4]&nbsp;&nbsp;Set Up Python Virtual Environment
-> [!NOTE]
-> **These instructions are for unix-based systems (i.e. MacOS, Linux). Before you proceed, make sure that you have installed `python` and `pip`. If you have not, follow [these](https://packaging.python.org/en/latest/tutorials/installing-packages/) instructions to do so.**
 
 #### 2.1. Create Python virtual environment
 ```
@@ -136,7 +135,7 @@ python3 -m src.agent.agent_tools.discord
 Expected output:
 ```
 Connecting to discord...
-Connected to discrod bot <USERNAME> with id <USER_ID>.
+Connected to discord bot <USERNAME> with id <USER_ID>.
 ```
 
 
@@ -151,7 +150,7 @@ INFO: Twitter client starting up...
 INFO: Connected to twitter user <USERNAME> with id <USER_ID>.
 INFO: Discord client starting up...
 WARNING: PyNaCl is not installed, voice will NOT be supported
-INFO: Connected to discrod bot <USERNAME> with id <USER_ID>.
+INFO: Connected to discord bot <USERNAME> with id <USER_ID>.
 ```
 
 
